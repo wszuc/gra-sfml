@@ -4,7 +4,7 @@
 
 int main()
 {
-	Renderer game(900, 900);
+	Renderer game(700, 800);
 	Controller controller;
 	Controller *_controller = &controller;
 	game.run(_controller);

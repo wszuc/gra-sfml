@@ -3,12 +3,12 @@
 
 Renderer::Renderer(unsigned int width, unsigned int height)
 {
-	window.create(sf::VideoMode(width, height), "SFML game", sf::Style::Default);
+	window.create(sf::VideoMode(width, height), "Flappy Bird Clone", sf::Style::Default);
 }
 
 Renderer::~Renderer()
 {
-	std::cout << "Destructor hahah" << std::endl;
+	std::cout << "Window destructed" << std::endl;
 }
 void Renderer::run(Controller *_controller)
 {

@@ -5,6 +5,8 @@
 class Model
 {
 private:
+	// window size
+	float window_width, window_height;
 	// vectors of sprite, figures, textures etc. that'll be served to draw
 	sf::CircleShape shapes_to_draw[1];
 	std::vector<sf::Sprite> sprites_to_draw;
@@ -20,5 +22,5 @@ private:
 public:
 	sf::CircleShape getCircleShapes();
 	sf::Sprite getSprites();
-	Model(); // initial load of objects into the scene
+	Model(float width, float height); // initial load of objects into the scene
 };
