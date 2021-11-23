@@ -9,6 +9,17 @@ Model::Model(float width, float height)
 	loadTextures();
 }
 
+void Model::setView()
+{
+	view.setSize(sf::Vector2f(window_width, window_height));
+	view.setCenter(sf::Vector2f(window_width / 2, window_height / 2));
+}
+
+sf::View Model::getView()
+{
+	return view;
+}
+
 std::vector<sf::Sprite> Model::getSprites()
 {
 	return sprites_to_draw;
