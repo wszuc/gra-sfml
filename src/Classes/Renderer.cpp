@@ -17,7 +17,7 @@ void Renderer::run(Controller *_controller)
 	// Creates main lopp
 	while (window.isOpen())
 	{
-		while (!window.pollEvent(e))
+		while (window.pollEvent(e))
 		{
 			if (e.type == sf::Event::Closed)
 			{
