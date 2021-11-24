@@ -24,10 +24,8 @@ private:
 	// load textures from file, invoked in constructior
 	void loadTextures();
 
-	void setView();
-
 public:
 	std::vector<sf::Sprite> getSprites();
 	sf::View getView();
-	Model(float width, float height); // initial load of objects into the scene
+	void init(float width, float height);
 };

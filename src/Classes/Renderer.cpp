@@ -10,10 +10,10 @@ Renderer::~Renderer()
 {
 	std::cout << "Window destructed" << std::endl;
 }
-void Renderer::run(Controller *_controller)
+void Renderer::run()
 {
-	// Creates pointer to the window that's used by the controller
-	sf::RenderWindow *_window = &window;
+	// Creates controller instance
+	Controller controller(&window);
 	// Creates main lopp
 	while (window.isOpen())
 	{
@@ -25,7 +25,7 @@ void Renderer::run(Controller *_controller)
 			}
 		}
 		window.clear(sf::Color::Green);
-		_controller->draw(_window);
+		controller.draw();
 		window.display();
 	}
 }

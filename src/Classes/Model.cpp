@@ -1,18 +1,16 @@
 #include "Headers/Model.h"
 
-Model::Model(float width, float height)
+void Model::init(float width, float height)
 {
 	// we'll need window size for scaling
 	window_width = width;
 	window_height = height;
 
 	loadTextures();
-}
 
-void Model::setView()
-{
 	view.setSize(sf::Vector2f(window_width, window_height));
 	view.setCenter(sf::Vector2f(window_width / 2, window_height / 2));
+	std::cout << "View set" << std::endl;
 }
 
 sf::View Model::getView()
