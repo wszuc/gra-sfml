@@ -1,12 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <stdlib.h>
+#include <vector>
 
 class Model
 {
 private:
 	// window size
 	float window_width, window_height;
+	// factor of speed increase
+	const float speed = 5;
 	// vectors of sprite, figures, textures etc. that'll be served to draw
 	std::vector<sf::Sprite> sprites_to_draw;
 
@@ -15,12 +18,15 @@ private:
 	// textures' scales
 	float background_scale, bird_scale, pipe_scale;
 	// sprites
-	sf::Sprite background, bird, pipe;
+	sf::Sprite background, background2, bird, pipe;
 
 	// load textures from file, invoked in constructior
 	void loadTextures();
 
 public:
+	float background_real_size;
 	std::vector<sf::Sprite> getSprites();
-	Model(float width, float height); // initial load of objects into the scene
+	sf::Vector2u getSize(sf::Sprite sprite);
+	void init(float width, float height);
+	void loopBackground(bool whichone);
 };

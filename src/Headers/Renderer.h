@@ -12,5 +12,5 @@ private:
 public:
 	Renderer(unsigned int width, unsigned int height);
 	~Renderer();
-	void run(Controller *_controller);
+	void run();
 };

@@ -4,16 +4,17 @@
 Renderer::Renderer(unsigned int width, unsigned int height)
 {
 	window.create(sf::VideoMode(width, height), "Flappy Bird Clone", sf::Style::Default);
+	std::cout << "Window created, size x: " << window.getSize().x << "Size y: " << window.getSize().y << std::endl;
 }
 
-Renderer::~Renderer()
+Renderer::~Renderer() {}
+void Renderer::run()
 {
-	std::cout << "Window destructed" << std::endl;
-}
-void Renderer::run(Controller *_controller)
-{
-	// Creates pointer to the window that's used by the controller
-	sf::RenderWindow *_window = &window;
+	sf::RenderWindow *_window;
+	window.setFramerateLimit(60);
+	_window = &window;
+	// Creates controller instance
+	Controller controller(_window);
 	// Creates main lopp
 	while (window.isOpen())
 	{
@@ -25,7 +26,7 @@ void Renderer::run(Controller *_controller)
 			}
 		}
 		window.clear(sf::Color::Green);
-		_controller->draw(_window);
+		controller.draw();
 		window.display();
 	}
 }

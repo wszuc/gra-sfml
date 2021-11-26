@@ -4,9 +4,7 @@
 
 int main()
 {
-	Renderer game(700, 800);
-	Controller controller;
-	Controller *_controller = &controller;
-	game.run(_controller);
+	Renderer game(700, 800); // window size
+	game.run();
 	return 0;
 }
