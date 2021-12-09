@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <vector>
 
+
 class Model
 {
 private:
@@ -24,9 +25,11 @@ private:
 	void loadTextures();
 
 public:
+
 	float background_real_size;
 	std::vector<sf::Sprite> getSprites();
 	sf::Vector2u getSize(sf::Sprite sprite);
 	void init(float width, float height);
 	void loopBackground(bool whichone);
+	void moveBird(float value, float x_value);
 };
