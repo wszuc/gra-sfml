@@ -11,15 +11,47 @@ Controller::Controller(sf::RenderWindow *_window)
 	std::cout << "View center x: " << view.getCenter().x << " y: " << view.getCenter().y << std::endl;
 	_window->setView(view);
 	current_background_inidicator = 0;
+	gravityClock.restart();
+	std::cout << "Controller constructed";
+}
+
+void Controller::handleInput(int key, bool value)
+{
+	switch (key)
+	{
+	case 1: // space
+		if (value == 0 && single_pressed == 0)
+		{
+			std::cout << "space pressed" << std::endl;
+			// reset current gravity effects and add temporary reverse gravity
+			gravityClock.restart();
+			model.moveBird(-spaceKick, 0);
+			single_pressed = 1;
+		}
+		if (value == 1)
+		{
+			single_pressed = 0;
+		}
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Controller::draw() // its injected into the main loop
 {
+	// Setting some things -> copying sprites to draw
 	sprites = model.getSprites();
+	// Handling input
 
-	// looping background
+	// Gravity
 
-	std::cout << "View center: " << view.getCenter().x << std::endl;
+	elapsed = gravityClock.getElapsedTime();
+	model.moveBird(gravityForce * elapsed.asSeconds() * elapsed.asSeconds() + initialGravityBoost, 0);
+
+	// Looping background
+
 	if (current_background_inidicator == 0)
 	{
 		if (view.getCenter().x - view.getSize().x / 2 >= sprites.at(0).getPosition().x + model.background_real_size)
@@ -36,9 +68,11 @@ void Controller::draw() // its injected into the main loop
 			model.loopBackground(1);
 		}
 	}
-	// looping through vector with sprites and drawin them in order
+
+	// Drawing all sprites
 
 	view.move(5, 0);
+	model.moveBird(0, 5);
 	_window->setView(view);
 	for (auto i = sprites.begin(); i != sprites.end(); i++)
 	{

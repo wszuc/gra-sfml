@@ -8,6 +8,7 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 }
 
 Renderer::~Renderer() {}
+
 void Renderer::run()
 {
 	sf::RenderWindow *_window;
@@ -23,6 +24,20 @@ void Renderer::run()
 			if (e.type == sf::Event::Closed)
 			{
 				window.close();
+			}
+			if (e.type == sf::Event::KeyPressed)
+			{
+				if (e.key.code == sf::Keyboard::Space)
+				{
+					controller.handleInput(1, 0);
+				}
+			}
+			if (e.type == sf::Event::KeyReleased)
+			{
+				if (e.key.code == sf::Keyboard::Space)
+				{
+					controller.handleInput(1, 1);
+				}
 			}
 		}
 		window.clear(sf::Color::Green);
