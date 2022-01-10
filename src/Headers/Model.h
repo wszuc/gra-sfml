@@ -15,11 +15,12 @@ private:
 	std::vector<sf::Sprite> sprites_to_draw;
 
 	// textures
-	sf::Texture background_t, bird_t, pipe_t;
+	sf::Texture background_t, bird_t, pipe_t, pipe2_t;
 	// textures' scales
 	float background_scale, bird_scale, pipe_scale;
 	// sprites
-	sf::Sprite background, background2, bird, pipe;
+	sf::Sprite background, background2, bird;
+	sf::Sprite pipe[10];
 
 	// load textures from file, invoked in constructior
 	void loadTextures();
@@ -32,4 +33,7 @@ public:
 	void init(float width, float height);
 	void loopBackground(bool whichone);
 	void moveBird(float value, float x_value);
+	void reversePipe(unsigned int whichone);
+	void placePipe(unsigned int whichone, unsigned int x, unsigned int y, unsigned int height);
+
 };
