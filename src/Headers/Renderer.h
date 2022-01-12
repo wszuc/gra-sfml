@@ -13,4 +13,5 @@ public:
 	Renderer(unsigned int width, unsigned int height);
 	~Renderer();
 	void run();
+	
 };

@@ -35,5 +35,5 @@ public:
 	void moveBird(float value, float x_value);
 	void reversePipe(unsigned int whichone);
 	void placePipe(unsigned int whichone, unsigned int x, unsigned int y, unsigned int height);
-
+	void checkCollisions();
 };

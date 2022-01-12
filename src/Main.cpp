@@ -5,6 +5,9 @@
 int main()
 {
 	Renderer game(700, 800); // window size
-	game.run();
+	for (;;)
+	{
+		game.run();
+	}
 	return 0;
 }

@@ -31,7 +31,7 @@ Controller::Controller(sf::RenderWindow *_window)
 
 	exit_message.setFont(arial);
 	exit_message.setString("Czy na pewno chcesz wyjsc?\n[1] Tak [2] Nie");
-	exit_message.setOrigin(exit_message.getLocalBounds().width/2, exit_message.getLocalBounds().height/2);
+	exit_message.setOrigin(exit_message.getLocalBounds().width / 2, exit_message.getLocalBounds().height / 2);
 
 	// Text for main menu
 
@@ -45,6 +45,12 @@ Controller::Controller(sf::RenderWindow *_window)
 		option[i].setOrigin(option[i].getGlobalBounds().width / 2, option[i].getGlobalBounds().height / 2);
 		option[i].setPosition(win_width / 2, 100 + 125 * i);
 	}
+
+	// Text for the game over screen
+
+	game_over_message.setFont(arial);
+	game_over_message.setString("Przegrales :(\n[1] Wyjscie [2] Wroc do menu glownego");
+	game_over_message.setOrigin(game_over_message.getGlobalBounds().width / 2, game_over_message.getGlobalBounds().height / 2);
 
 	// Placing first 10 pipes
 	int j = 0;
@@ -87,12 +93,14 @@ void Controller::handleInput(int key, bool value)
 
 void Controller::setState(short id)
 {
-	if(state != 3){
-last_state = state;
+	if (state != 3)
+	{
+		last_state = state;
 	}
 
 	state = id;
-	if(state==10){
+	if (state == 10)
+	{
 		state = last_state;
 	}
 	if (state != 0)
@@ -104,6 +112,7 @@ last_state = state;
 		rules.setPosition(view.getCenter());
 		controlls.setPosition(view.getCenter().x, win_height - 100);
 		exit_message.setPosition(view.getCenter());
+		game_over_message.setPosition(view.getCenter());
 	}
 	else
 	{
@@ -115,9 +124,7 @@ last_state = state;
 
 void Controller::changeDifficulity(int decrease_gap, int increase_speed)
 {
-	std::cout << gap_height << " <- before\n";
 	gap_height -= decrease_gap;
-	std::cout << gap_height << "<- after\n";
 	game_speed += increase_speed;
 }
 
@@ -187,6 +194,18 @@ void Controller::draw() // its injected into the main loop
 	model.moveBird(delta_s, game_speed);
 	_window->setView(view);
 
+	// Collisions
+
+	for (auto i = 3; i < 13; i++)
+	{
+		if (sprites.at(2).getGlobalBounds().intersects(sprites.at(i).getGlobalBounds()))
+		{
+			setState(4);
+		}
+	}
+
+	// Setting up and drawing a scene
+
 	switch (state)
 	{
 	case 0:
@@ -215,8 +234,11 @@ void Controller::draw() // its injected into the main loop
 		_window->draw(rules);
 		_window->draw(controlls);
 		break;
-		case 3:
+	case 3:
 		_window->draw(exit_message);
+		break;
+	case 4:
+		_window->draw(game_over_message);
 		break;
 	default:
 		break;

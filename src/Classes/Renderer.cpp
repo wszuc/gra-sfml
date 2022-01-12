@@ -9,6 +9,8 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 
 Renderer::~Renderer() {}
 
+
+
 void Renderer::run()
 {
 	sf::RenderWindow *_window;
@@ -47,7 +49,7 @@ void Renderer::run()
 					exit(0);
 				}
 			}
-			if (controller.getState() == 3 and e.type == sf::Event::KeyPressed)
+			if ((controller.getState() == 3 or controller.getState() == 4) and e.type == sf::Event::KeyPressed)
 			{
 				if (e.key.code == sf::Keyboard::Num1)
 				{
@@ -55,17 +57,25 @@ void Renderer::run()
 				}
 				if (e.key.code == sf::Keyboard::Num2)
 				{
-					controller.setState(10);
+					if (controller.getState() == 3)
+					{
+						controller.setState(10);
+					}
+					else
+					{
+						return;
+					}
 				}
 			}
 			if (e.type == sf::Event::KeyPressed and controller.getState() == 2)
 			{
+
 				if (e.key.code == sf::Keyboard::F1)
 				{
 					controller.setState(0);
 				}
 			}
-			if (e.type == sf::Event::KeyPressed and controller.getState() == 0)
+			else if (e.type == sf::Event::KeyPressed and controller.getState() == 0)
 			{
 				if (e.key.code == sf::Keyboard::Space and controller.getState() == 0)
 				{

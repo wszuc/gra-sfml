@@ -9,7 +9,7 @@
 class Controller
 {
 private:
-	short state = 1;  // current state of the game; 0 - game, 1 - menu, 2 - F1, 3 - escape
+	short state = 1;  // current state of the game; 0 - game, 1 - menu, 2 - F1, 3 - escape, 4 - game over
 	sf::RenderWindow *_window; // pointer to the window
 	Model model;
 	sf::View view;
@@ -40,10 +40,9 @@ short last_state=9;
 	string score_str;
 
 	sf::Text rules, controlls;
-
 	sf::Text option[4];
-
 	sf::Text exit_message;
+	sf::Text game_over_message;
 
 public:
 	unsigned int win_height = 0, win_width = 0;

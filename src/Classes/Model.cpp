@@ -41,9 +41,16 @@ void Model::reversePipe(unsigned int whichone)
 	sprites_to_draw.at(whichone + 3).rotate(60);
 }
 
+void Model::checkCollisions()
+{
+	for(auto i=0; i<10; i++){
+		if(pipe[i].getGlobalBounds().intersects(sprites_to_draw.at(2).getGlobalBounds())){
+		}
+	}
+}
+
 void Model::placePipe(unsigned int whichone, unsigned int x, unsigned int y, unsigned int height)
 {
-	std::cout << "Placing pipe, random h: " << height << "\ncomputed scale: " << (float)height / pipe_t.getSize().y << "\nX pos: " << x << "\n\n";
 	sprites_to_draw.at(whichone + 3).setScale(1, (float)height / pipe_t.getSize().y);
 	// TODO: obracaj górne rury
 
