@@ -19,6 +19,33 @@ Controller::Controller(sf::RenderWindow *_window)
 	gap_height = 0.4 * win_height;
 	gap_width = 0.5 * win_width;
 
+	// Text for F1 menu
+	rules.setFont(arial);
+	controlls.setFont(arial);
+	rules.setString("Celem gry jest sterowanie ptakiem tak,\nby omijac przeszkody.\nIm dluzej gracz utrzyma sie przy zyciu,\ntym lepszy wynik osiagnie.");
+	controlls.setString("\tSPACJA - skok\nF1 - pomoc ESC - menu");
+	rules.setOrigin(rules.getLocalBounds().width / 2, rules.getLocalBounds().height / 2);
+	controlls.setOrigin(controlls.getLocalBounds().width / 2, controlls.getLocalBounds().height / 2);
+
+	// Text for esc menu
+
+	exit_message.setFont(arial);
+	exit_message.setString("Czy na pewno chcesz wyjsc?\n[1] Tak [2] Nie");
+	exit_message.setOrigin(exit_message.getLocalBounds().width/2, exit_message.getLocalBounds().height/2);
+
+	// Text for main menu
+
+	option[0].setString("[1] Poz. latwy");
+	option[1].setString("[2] Poz. sredni");
+	option[2].setString("[3] Poz. trudny");
+	option[3].setString("[4] Wyjscie");
+	for (auto i = 0; i < 4; i++)
+	{
+		option[i].setFont(arial);
+		option[i].setOrigin(option[i].getGlobalBounds().width / 2, option[i].getGlobalBounds().height / 2);
+		option[i].setPosition(win_width / 2, 100 + 125 * i);
+	}
+
 	// Placing first 10 pipes
 	int j = 0;
 	for (auto i = 0; i < gap_width * 5; i += gap_width)
@@ -58,6 +85,42 @@ void Controller::handleInput(int key, bool value)
 	}
 }
 
+void Controller::setState(short id)
+{
+	if(state != 3){
+last_state = state;
+	}
+
+	state = id;
+	if(state==10){
+		state = last_state;
+	}
+	if (state != 0)
+	{
+		temp_speed = game_speed;
+		temp_delta_s = delta_s;
+		game_speed = 0;
+		delta_s = 0;
+		rules.setPosition(view.getCenter());
+		controlls.setPosition(view.getCenter().x, win_height - 100);
+		exit_message.setPosition(view.getCenter());
+	}
+	else
+	{
+		game_speed = temp_speed;
+		delta_s = temp_delta_s;
+		gravity_clock.restart();
+	}
+}
+
+void Controller::changeDifficulity(int decrease_gap, int increase_speed)
+{
+	std::cout << gap_height << " <- before\n";
+	gap_height -= decrease_gap;
+	std::cout << gap_height << "<- after\n";
+	game_speed += increase_speed;
+}
+
 void Controller::draw() // its injected into the main loop
 {
 	// Setting some things -> copying sprites to draw
@@ -90,7 +153,7 @@ void Controller::draw() // its injected into the main loop
 		{
 			unsigned int randomised_h = randomiser.random(min_height, static_cast<int>(max_height));
 			model.placePipe(i, last_dist + gap_width, 0, randomised_h);
-			// model.reversePipe(i);
+
 			unsigned int second_height = win_height - randomised_h - gap_height;
 			model.placePipe(i + 1, last_dist + gap_width, win_height - second_height, second_height);
 			last_dist += gap_width;
@@ -98,39 +161,64 @@ void Controller::draw() // its injected into the main loop
 	}
 
 	// Calculating gravity induced distance
-
-	if (is_upward == 0)
+	if (getState() == 0)
 	{
-		delta_s = initial_gravity_boost + gravity_force * gravity_clock.getElapsedTime().asSeconds() * gravity_clock.getElapsedTime().asSeconds() / 2;
-	}
-	else
-	{
-		if (delta_s < 1)
+		if (is_upward == 0)
 		{
-			delta_s += gravity_force * gravity_clock.getElapsedTime().asSeconds() * gravity_clock.getElapsedTime().asSeconds() / 2;
+			delta_s = initial_gravity_boost + gravity_force * gravity_clock.getElapsedTime().asSeconds() * gravity_clock.getElapsedTime().asSeconds() / 2;
 		}
 		else
 		{
-			is_upward = 0;
+			if (delta_s < 1)
+			{
+				delta_s += gravity_force * gravity_clock.getElapsedTime().asSeconds() * gravity_clock.getElapsedTime().asSeconds() / 2;
+			}
+			else
+			{
+				is_upward = 0;
+			}
 		}
 	}
 
 	// Adding movement
 
-	view.move(5, 0);
-	points.move(5, 0);
-	model.moveBird(delta_s, 5);
+	view.move(game_speed, 0);
+	points.move(game_speed, 0);
+	model.moveBird(delta_s, game_speed);
 	_window->setView(view);
 
-	// Drawing all sprites
-
-	for (auto i = sprites.begin(); i != sprites.end(); i++)
+	switch (state)
 	{
-		_window->draw(*i);
+	case 0:
+		// Drawing all sprites
+
+		for (auto i = sprites.begin(); i != sprites.end(); i++)
+		{
+			_window->draw(*i);
+		}
+
+		// Draw text
+		score_str = "Punkty: " + to_string(score);
+		points.setString(score_str);
+		_window->draw(points);
+		break;
+
+	case 1:
+		// Drawing main menu
+		for (auto i = 0; i < 4; i++)
+		{
+			_window->draw(option[i]);
+		}
+		break;
+	case 2:
+		// Drawing F1 menu
+		_window->draw(rules);
+		_window->draw(controlls);
+		break;
+		case 3:
+		_window->draw(exit_message);
+		break;
+	default:
+		break;
 	}
-
-	// Draw text
-
-	points.setString(); // polacz string punkty z wynikiem
-	_window->draw(points);
 }
