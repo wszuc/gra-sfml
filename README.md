@@ -30,4 +30,4 @@ Podczas pisania kodu odczułem jednak jego małą praktyczność w Game-Developm
 </ul>
 Pomimo powyżej wymienionych problemów, pisanie kodu zgodnie z założeniami wzorca MVC pomogło mi w jego zrozumieniu, a narzucona przez niego struktura plików przyspieszyła tworzenie projektu i w dużej mierze poprawiła klarowność kodu.
 
-![](.\screens\scr1.png)
+![](https://raw.githubusercontent.com/wszuc/gra-sfml/main/screens/scr1.png?token=GHSAT0AAAAAABTFZG4KQBEOCRMZVHFZ2DM6YSXFVZQ)
