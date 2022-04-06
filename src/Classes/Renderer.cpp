@@ -9,7 +9,40 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 
 Renderer::~Renderer() {}
 
+string Renderer::open()
+{
+	FILE *save;
+	char buffer[100];
+	if (fopen("leaderboard.bin", "rb") == NULL)
+	{
+		return "";
+	}
+	save = fopen("leaderboard.bin", "rb");
+	fread(buffer, sizeof(buffer), 1, save);
+	fclose(save);
+	return buffer;
+}
 
+void Renderer::save(string data)
+{
+	FILE *save;
+	save = fopen("leaderboard.bin", "ab");
+	if (save == NULL)
+	{
+		std::cout << "Error loading file" << std::endl;
+	}
+	else
+	{
+		std::cout << "Writing data..." << std::endl;
+		char *p = new char[data.size()];
+		for (unsigned int i = 0; i < data.size(); i++)
+		{
+			p[i] = data[i];
+		}
+		fwrite(p, sizeof(char), data.size(), save);
+	}
+	fclose(save);
+}
 
 void Renderer::run()
 {
@@ -51,18 +84,30 @@ void Renderer::run()
 			}
 			if ((controller.getState() == 3 or controller.getState() == 4) and e.type == sf::Event::KeyPressed)
 			{
+				if (once_opened == 0)
+				{
+					controller.acceptData(open());
+					once_opened = 1;
+				}
+
 				if (e.key.code == sf::Keyboard::Num1)
 				{
+					if (controller.getState() == 4)
+					{
+						save(controller.dataToSave());
+					}
 					exit(0);
 				}
 				if (e.key.code == sf::Keyboard::Num2)
 				{
+					once_opened = 0;
 					if (controller.getState() == 3)
 					{
 						controller.setState(10);
 					}
 					else
 					{
+						save(controller.dataToSave());
 						return;
 					}
 				}

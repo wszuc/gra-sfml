@@ -31,7 +31,6 @@ Controller::Controller(sf::RenderWindow *_window)
 
 	exit_message.setFont(arial);
 	exit_message.setString("Czy na pewno chcesz wyjsc?\n[1] Tak [2] Nie");
-	exit_message.setOrigin(exit_message.getLocalBounds().width / 2, exit_message.getLocalBounds().height / 2);
 
 	// Text for main menu
 
@@ -49,8 +48,9 @@ Controller::Controller(sf::RenderWindow *_window)
 	// Text for the game over screen
 
 	game_over_message.setFont(arial);
-	game_over_message.setString("Przegrales :(\n[1] Wyjscie [2] Wroc do menu glownego");
+	game_over_message.setString("Przegrales :(\n[1] Wyjscie [2] Wroc do menu glownego\n[SPACJA] Wyniki");
 	game_over_message.setOrigin(game_over_message.getGlobalBounds().width / 2, game_over_message.getGlobalBounds().height / 2);
+	leaderboard_txt.setFont(arial);
 
 	// Placing first 10 pipes
 	int j = 0;
@@ -128,6 +128,24 @@ void Controller::changeDifficulity(int decrease_gap, int increase_speed)
 	game_speed += increase_speed;
 }
 
+void Controller::acceptData(string data)
+{
+	leaderboard = data;
+	leaderboard_txt.setString(leaderboard);
+	exit_message.setOrigin(exit_message.getLocalBounds().width / 2, exit_message.getLocalBounds().height / 2);
+	leaderboard_txt.setOrigin(leaderboard_txt.getLocalBounds().width / 2, leaderboard_txt.getLocalBounds().height / 2);
+	leaderboard_txt.setPosition(view.getCenter().x, 50);
+}
+
+string Controller::dataToSave()
+{
+	std::time_t t = std::time(0); // get time now
+	std::tm *now = std::localtime(&t);
+	string data = to_string(now->tm_year + 1900) + "-" + to_string(now->tm_mon + 1) + "-" + to_string(now->tm_mday) + "\t" + "score: " + to_string(score) + "\n";
+
+	return data;
+}
+
 void Controller::draw() // its injected into the main loop
 {
 	// Setting some things -> copying sprites to draw
@@ -168,6 +186,7 @@ void Controller::draw() // its injected into the main loop
 	}
 
 	// Calculating gravity induced distance
+
 	if (getState() == 0)
 	{
 		if (is_upward == 0)
@@ -238,6 +257,7 @@ void Controller::draw() // its injected into the main loop
 		_window->draw(exit_message);
 		break;
 	case 4:
+		_window->draw(leaderboard_txt);
 		_window->draw(game_over_message);
 		break;
 	default:

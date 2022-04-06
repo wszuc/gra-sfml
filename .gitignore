@@ -8,6 +8,7 @@ Thumbs.db
 
 # VS Code
 .vscode/ipch
+.vscode
 
 # Project specific
 #
