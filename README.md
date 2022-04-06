@@ -28,6 +28,6 @@ Podczas pisania kodu odczułem jednak jego małą praktyczność w Game-Developm
   <li>Pisanie nadmiarowego kodu, by spełnic założenia wzorca.</li>
   <li>Trudności przy debugowaniu oraz dodawaniu nowych funkcjonalności, głównie wynikające z problemu pierwszego</li>
 </ul>
-
+Pomimo powyżej wymienionych problemów, pisanie kodu zgodnie z założeniami wzorca MVC pomogło mi w jego zrozumieniu, a narzucona przez niego struktura plików przyspieszyła tworzenie projektu i w dużej mierze poprawiła klarowność kodu.
 
 
